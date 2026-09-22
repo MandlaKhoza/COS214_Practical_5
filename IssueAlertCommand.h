@@ -2,6 +2,7 @@
 #define ISSUEALERTCOMMAND_H
 
 #include "Command.h"
+#include "AlertService.h"
 
 class AlertService;
 
@@ -19,9 +20,9 @@ public:
         std::string priority
     );
 
-    void execute();
-    void undo();
-    std::string getDescription();
+    void execute() override;
+    void undo() override;
+    std::string getDescription() const override;
 
     ~IssueAlertCommand();
 };

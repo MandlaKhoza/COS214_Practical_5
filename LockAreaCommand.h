@@ -2,9 +2,9 @@
 #define LOCKAREACOMMAND_H
 
 #include "Command.h"
+#include "AreaComponent.h"
 
 class AreaComponent;
-
 class LockAreaCommand : public Command
 {
 private:
@@ -13,9 +13,9 @@ private:
 public:
     LockAreaCommand(AreaComponent* area);
 
-    void execute();
-    void undo();
-    std::string getDescription();
+    void execute() override;
+    void undo() override;
+    std::string getDescription() const override;
 
     ~LockAreaCommand();
 };

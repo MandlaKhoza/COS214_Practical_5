@@ -2,6 +2,9 @@
 #define DISPATCHUNITCOMMAND_H
 
 #include "Command.h"
+#include "ResponseComponent.h"
+#include "Incident.h"
+#include <string>
 
 class ResponseComponent;
 class Incident;
@@ -18,9 +21,9 @@ public:
         Incident* incident
     );
 
-    void execute();
-    void undo();
-    std::string getDescription();
+    void execute() override;
+    void undo() override;
+    std::string getDescription() const override;
 
     ~DispatchUnitCommand();
 };

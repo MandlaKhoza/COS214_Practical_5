@@ -2,6 +2,9 @@
 #define OPERATORCONSOLE_H
 
 #include <vector>
+#include <iostream>
+
+#include "Command.h"
 
 class Command;
 
@@ -11,6 +14,7 @@ private:
     std::vector<Command*> history;
 
 public:
+
     ~OperatorConsole();
 
     void executeCommand(Command* cmd);

@@ -2,6 +2,8 @@
 #define CANCELACTIONCOMMAND_H
 
 #include "Command.h"
+#include <string>
+
 
 class CancelActionCommand : public Command
 {
@@ -11,9 +13,9 @@ private:
 public:
     CancelActionCommand(Command* target);
 
-    void execute();
-    void undo();
-    std::string getDescription();
+    void execute() override;
+    void undo() override;
+    std::string getDescription() const override;
 
     ~CancelActionCommand();
 };
