@@ -15,6 +15,8 @@ void OperatorConsole::undoLast() {
         Command* lastCommand = history.back();
         lastCommand->undo();
         history.pop_back();
+
+        delete lastCommand;
         
     }
 }
@@ -28,4 +30,12 @@ void OperatorConsole::printHistory() {
     }
 }
 
-OperatorConsole::~OperatorConsole() {}
+OperatorConsole::~OperatorConsole() {
+    for (Command* command : history)
+    {
+        delete command;
+    }
+
+    history.clear();
+    
+}

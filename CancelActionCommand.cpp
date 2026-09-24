@@ -1,27 +1,34 @@
 #include "CancelActionCommand.h"
 
-CancelActionCommand::CancelActionCommand(Command* target) {
-    this->target = target;
+CancelActionCommand::CancelActionCommand(Incident* incident) {
+    this->incident = incident;
 }
 
+// Cancels the associated incident.
 void CancelActionCommand::execute() {
-    if (target != nullptr)
+    if (incident != nullptr)
     {
-        target->execute();
+        incident->cancel();
         
     }
     
 }
+
+// Restores the cancelled incident to its dispatched state.
 void CancelActionCommand::undo() {
-    if (target != nullptr)
+    if (incident != nullptr)
     {
-        target->undo();
+        incident->dispatch();
         
     }
     
 }
 std::string CancelActionCommand::getDescription() const {
-   return "Cancel" + target->getDescription();
+    if (incident == nullptr) {
+        return "Cancel: no incident";
+    }
+
+    return "Canceled: " + incident->getDescription();
 }
 
 CancelActionCommand::~CancelActionCommand() {}

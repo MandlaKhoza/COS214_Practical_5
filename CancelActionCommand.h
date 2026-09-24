@@ -2,41 +2,42 @@
 #define CANCELACTIONCOMMAND_H
 
 #include "Command.h"
+#include "Incident.h"
 #include <string>
 
 /**
  * @class CancelActionCommand
- * @brief Command responsible for cancelling another command.
+ * @brief Command responsible for cancelling an incident.
  *
- * Stores a target Command and cancels its action by invoking its undo
- * operation. The cancellation itself can also be reversed.
+ * Represents an explicit cancellation of an incident, such as when
+ * an emergency is determined to be a false alarm.
  */
 class CancelActionCommand : public Command
 {
 private:
-    Command* target;
+Incident* incident;
 
 public:
 
     /**
-     * @brief Creates a command that cancels another command.
-     * @param target The command whose action should be cancelled.
+     * @brief Creates a command for cancelling an incident.
+     * @param incident The incident that should be cancelled.
      */
-    CancelActionCommand(Command* target);
+    CancelActionCommand(Incident* incident);
 
     /**
-     * @brief Cancels the target command by undoing it.
+     * @brief Cancels the associated incident.
      */
     void execute() override;
 
     /**
-     * @brief Reverses the cancellation by executing the target command again.
+     * @brief Reverses the cancellation of the incident.
      */
     void undo() override;
 
     /**
      * @brief Returns a description of the cancellation command.
-     * @return A string describing the command being cancelled.
+     * @return A string describing the incident being cancelled.
      */
     std::string getDescription() const override;
 
