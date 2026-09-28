@@ -6,15 +6,33 @@
 #include <algorithm>
 #include <iostream>
 
+/**
+ * @brief Destroys the coordinator.
+ *
+ * Deliberately does not delete any of the registered ResponseComponent
+ * pointers: this is an aggregation relationship, not composition. The
+ * coordinator was handed pointers to components it does not own (they
+ * are shared with Command receivers elsewhere in the system), so
+ * ownership - and therefore deletion - stays with whoever created them.
+ * Only the internal vector itself is cleared.
+ */
 ResponseCoordinator::~ResponseCoordinator()
 {
-    // Aggregation, not composition: the coordinator was handed pointers to
-    // response components it does not own (they are shared with Command
-    // receivers elsewhere in the system), so it must NOT delete them here.
-    // Just let the vector itself go out of scope.
     components.clear();
 }
 
+/**
+ * @brief Registers a colleague with this mediator.
+ *
+ * Adds @p component to the set of colleagues this coordinator manages
+ * and points its mediator reference back at this coordinator, so the
+ * colleague can later call notify() on state changes. Null pointers and
+ * components already registered are silently ignored rather than
+ * causing duplicate entries or a crash.
+ *
+ * @param component The response component to register. Ownership is
+ *        not taken; the coordinator only stores the pointer.
+ */
 void ResponseCoordinator::registerComponent(ResponseComponent* component)
 {
     if (component == nullptr) {
@@ -37,6 +55,29 @@ void ResponseCoordinator::registerComponent(ResponseComponent* component)
               << " as a response colleague." << std::endl;
 }
 
+/**
+ * @brief Reacts to an event reported by a colleague.
+ *
+ * This is the heart of the Mediator pattern: @p sender only ever reports
+ * what happened to itself (e.g. "dispatched"), and has no knowledge of
+ * which other colleagues exist or what should happen next as a result -
+ * that decision is made entirely inside this method, not inside
+ * SecurityTeam, MedicalTeam or FacilitiesTeam.
+ *
+ * Currently handled events:
+ *  - "dispatched": if the sender is a SecurityTeam or MedicalTeam, every
+ *    registered FacilitiesTeam (other than the sender) is directed to
+ *    activate() and prepare the affected area.
+ *  - "standDown": the symmetric case - every other registered
+ *    FacilitiesTeam is told to standDown() as well.
+ *  - anything else: reported but explicitly left unhandled, so an
+ *    unrecognised event fails safely instead of being silently ignored.
+ *
+ * @param sender The colleague reporting the event. A null sender is
+ *        handled gracefully and simply logged.
+ * @param event  A short, case-sensitive string identifying what
+ *        happened (e.g. "dispatched", "standDown").
+ */
 void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
 {
     if (sender == nullptr) {
@@ -48,17 +89,7 @@ void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
     std::cout << "[Coordinator] " << sender->getName()
               << " reported event: \"" << event << "\"" << std::endl;
 
-    // This is the core Mediator behaviour: the sender only ever reports
-    // what happened to itself. It has no idea which other colleagues
-    // exist or what they should do about it - that decision lives here,
-    // not in SecurityTeam/MedicalTeam/FacilitiesTeam themselves.
-
     if (event == "dispatched") {
-        // A security or medical unit going active on an incident means
-        // the area they are heading into needs to be prepared. Rather
-        // than SecurityTeam knowing about FacilitiesTeam directly, it
-        // just reports "dispatched" and the coordinator decides that
-        // facilities should mobilise too.
         bool isFieldUnit =
             dynamic_cast<SecurityTeam*>(sender) != nullptr ||
             dynamic_cast<MedicalTeam*>(sender) != nullptr;
@@ -79,10 +110,6 @@ void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
         }
     }
     else if (event == "standDown") {
-        // Symmetric to the above: once a field unit stands down, tell
-        // facilities to stand down as well, unless another unit is still
-        // active (kept simple here - a fuller implementation could track
-        // how many field units are currently active).
         for (ResponseComponent* component : components) {
             FacilitiesTeam* facilities =
                 dynamic_cast<FacilitiesTeam*>(component);
