@@ -60,7 +60,7 @@ void EmergencyResponseFacade::declareEmergency(
     console->executeCommand(dispatch);
     console->executeCommand(lock);
     console->executeCommand(alert);
-
+    incident->contain();
 }
     /**
      * @brief Cancels an active emergency response.
@@ -72,14 +72,27 @@ void EmergencyResponseFacade::declareEmergency(
      */
 void EmergencyResponseFacade::cancelEmergency(Incident* incident) {
 
-    if (incident == nullptr || console == nullptr || coordinator == nullptr) 
+    if (incident == nullptr || console == nullptr || coordinator == nullptr)
     {
         return;
     }
 
-    CancelActionCommand* cancel = new CancelActionCommand(incident);
+    // 1. Undo the three commands declareEmergency() issued, in reverse.
+    //    undoLast() pops IssueAlertCommand, then LockAreaCommand,
+    //    then DispatchUnitCommand. Each undo reverses its own effect
+    //    (retract alert, unlock area, stand unit down).
+    console->undoLast();
+    console->undoLast();
+    console->undoLast();
 
-    console->executeCommand(cancel);    
+    // 2. Cancel the incident. Depending on its current state
+    //    (Active, Dispatched, or Reported), cancel() transitions it
+    //    to Cancelled.
+    CancelActionCommand* cancel = new CancelActionCommand(incident);
+    console->executeCommand(cancel);
+
+    // 3. Tell the mediator to stand everyone down.
+    coordinator->notify(nullptr, "emergencyCancelled");    
 }
 void EmergencyResponseFacade::resolveEmergency(Incident* incident) {
 
