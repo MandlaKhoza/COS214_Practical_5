@@ -1,8 +1,13 @@
 #include "ResponseMediator.h"
 
-// Pure virtual base class - the destructor still needs a body because
-// derived destructors (ResponseCoordinator::~ResponseCoordinator) chain
-// up to it during destruction.
+/**
+ * @brief Destroys the mediator.
+ *
+ * ResponseMediator is a pure abstract base class, but the destructor
+ * still needs a body because a derived destructor (e.g.
+ * ResponseCoordinator::~ResponseCoordinator()) chains up to it during
+ * destruction of any object deleted through a ResponseMediator*.
+ */
 ResponseMediator::~ResponseMediator()
 {
 }
