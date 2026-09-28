@@ -43,5 +43,7 @@ std::string CancelActionCommand::getDescription() const {
 
     return "Canceled: " + incident->getDescription();
 }
-
+    /**
+     * @brief Destroys the cancel action command.
+     */
 CancelActionCommand::~CancelActionCommand() {}
