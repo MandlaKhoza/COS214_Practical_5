@@ -10,6 +10,7 @@
 #include "DispatchUnitCommand.h"
 #include "LockAreaCommand.h"
 #include "IssueAlertCommand.h"
+#include "CancelActionCommand.h"
 
 
 EmergencyResponseFacade::EmergencyResponseFacade(
@@ -33,6 +34,8 @@ void EmergencyResponseFacade::declareEmergency(
         return;
     }
 
+    coordinator->notify(unit, "EMERGENCY DECLARED: ");
+
     DispatchUnitCommand* dispatch = new DispatchUnitCommand(unit, incident);
 
     LockAreaCommand* lock = new LockAreaCommand(area);
@@ -46,18 +49,13 @@ void EmergencyResponseFacade::declareEmergency(
 }
 
 void EmergencyResponseFacade::cancelEmergency(Incident* incident) {
-    
 
-    if (incident == nullptr)
+    if (incident == nullptr || console == nullptr || coordinator == nullptr) 
     {
         return;
     }
 
-    // Reversing previously executed emergency actions
-    console->undoLast();
-    console->undoLast();
-    console->undoLast();
+    CancelActionCommand* cancel = new CancelActionCommand(incident);
 
-    incident->cancel();
-    
+    console->executeCommand(cancel);    
 }
