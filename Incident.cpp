@@ -101,6 +101,9 @@ void Incident::setState(IncidentState* state)
     delete currentState;
     currentState = state;
 
+    std::cout << "[Incident] " << id
+              << " -> " << currentState->getName() << std::endl;
+
     notifyMediator(currentState->getName());
 }
 
@@ -171,5 +174,6 @@ void Incident::cancel()
  */
 void Incident::notifyMediator(std::string event)
 {
-    (void)event;
+    std::cout << "[Incident] state event: \"" << event << "\" "
+              << "(facade will mediate on our behalf)" << std::endl;
 }
