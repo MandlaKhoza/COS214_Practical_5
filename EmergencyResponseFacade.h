@@ -63,6 +63,14 @@ public:
      * @param incident The incident whose emergency response should be cancelled.
      */
     void cancelEmergency(Incident* incident);
+    /**
+     * @brief resolves teh current incident at hand 
+     *
+     *will change teh stae from active to resolved to show that we have sorted out teh issue at hand
+     *
+     * @param incident The incident whose emergency response should be cresolved.
+     */
+    void resolveEmergency(Incident *incident);
 };
 
 #endif
