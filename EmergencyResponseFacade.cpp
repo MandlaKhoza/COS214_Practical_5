@@ -12,7 +12,13 @@
 #include "IssueAlertCommand.h"
 #include "CancelActionCommand.h"
 
-
+    /**
+     * @brief Constructs an EmergencyResponseFacade.
+     *
+     * @param console The operator console used to execute emergency commands.
+     * @param coordinator The mediator responsible for coordinating response components.
+     * @param alertService The service responsible for issuing emergency alerts.
+     */
 EmergencyResponseFacade::EmergencyResponseFacade(
     OperatorConsole* console,
     ResponseMediator* coordinator,
@@ -22,7 +28,16 @@ EmergencyResponseFacade::EmergencyResponseFacade(
     this->coordinator = coordinator;
     this->alertService = alertService;
 } 
-
+    /**
+     * @brief Declares an emergency and coordinates the required response actions.
+     *
+     * Dispatches the specified response unit, locks the affected area,
+     * and issues a high-priority emergency alert through the command system.
+     *
+     * @param incident The incident for which the emergency is being declared.
+     * @param area The campus area affected by the emergency.
+     * @param unit The response component that should respond to the incident.
+     */
 void EmergencyResponseFacade::declareEmergency(
     Incident* incident,
     AreaComponent* area,
@@ -47,7 +62,14 @@ void EmergencyResponseFacade::declareEmergency(
     console->executeCommand(alert);
 
 }
-
+    /**
+     * @brief Cancels an active emergency response.
+     *
+     * Reverses the previously executed emergency actions and cancels
+     * the associated incident.
+     *
+     * @param incident The incident whose emergency response should be cancelled.
+     */
 void EmergencyResponseFacade::cancelEmergency(Incident* incident) {
 
     if (incident == nullptr || console == nullptr || coordinator == nullptr) 
@@ -58,4 +80,14 @@ void EmergencyResponseFacade::cancelEmergency(Incident* incident) {
     CancelActionCommand* cancel = new CancelActionCommand(incident);
 
     console->executeCommand(cancel);    
+}
+void EmergencyResponseFacade::resolveEmergency(Incident* incident) {
+
+    if (incident == nullptr || console == nullptr)
+    {
+        return;
+    }
+
+    // Active -> Resolved via the State pattern.
+    incident->resolve();
 }
