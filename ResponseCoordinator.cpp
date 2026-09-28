@@ -80,7 +80,7 @@ void ResponseCoordinator::registerComponent(ResponseComponent* component)
  */
 void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
 {
-    if (sender == nullptr) {
+   if (sender == nullptr) {
         std::cout << "[Coordinator] Ignored notification with no sender."
                   << std::endl;
         return;
@@ -89,7 +89,17 @@ void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
     std::cout << "[Coordinator] " << sender->getName()
               << " reported event: \"" << event << "\"" << std::endl;
 
+    // This is the core Mediator behaviour: the sender only ever reports
+    // what happened to itself. It has no idea which other colleagues
+    // exist or what they should do about it - that decision lives here,
+    // not in SecurityTeam/MedicalTeam/FacilitiesTeam themselves.
+
     if (event == "dispatched") {
+        // A security or medical unit going active on an incident means
+        // the area they are heading into needs to be prepared. Rather
+        // than SecurityTeam knowing about FacilitiesTeam directly, it
+        // just reports "dispatched" and the coordinator decides that
+        // facilities should mobilise too.
         bool isFieldUnit =
             dynamic_cast<SecurityTeam*>(sender) != nullptr ||
             dynamic_cast<MedicalTeam*>(sender) != nullptr;
@@ -110,6 +120,10 @@ void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
         }
     }
     else if (event == "standDown") {
+        // Symmetric to the above: once a field unit stands down, tell
+        // facilities to stand down as well, unless another unit is still
+        // active (kept simple here - a fuller implementation could track
+        // how many field units are currently active).
         for (ResponseComponent* component : components) {
             FacilitiesTeam* facilities =
                 dynamic_cast<FacilitiesTeam*>(component);
@@ -120,6 +134,26 @@ void ResponseCoordinator::notify(ResponseComponent* sender, std::string event)
                           << " now that " << sender->getName()
                           << " has stood down." << std::endl;
                 facilities->standDown();
+            }
+        }
+    }
+    else if (event == "emergencyDeclared") {
+        std::cout << "[Coordinator] Emergency declared by "
+                  << sender->getName() << ". Notifying all colleagues."
+                  << std::endl;
+        for (ResponseComponent* c : components) {
+            if (c != sender) {
+                std::cout << "[Coordinator] Alerting " << c->getName()
+                          << std::endl;
+            }
+        }
+    }
+    else if (event == "emergencyCancelled") {
+        std::cout << "[Coordinator] Emergency cancelled. Standing all colleagues down."
+                  << std::endl;
+        for (ResponseComponent* c : components) {
+            if (c != sender) {
+                c->standDown();
             }
         }
     }
