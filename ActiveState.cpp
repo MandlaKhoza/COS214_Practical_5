@@ -34,7 +34,11 @@ void ActiveState::handleContain(Incident *incident)
  */
 void ActiveState::handleResolve(Incident *incident)
 {
-    (void)incident;
+    if (incident != 0)
+    {
+        std::cout << "[State] Active -> Resolved" << std::endl;
+        incident->setState(new ResolvedState());
+    }
 }
 
 /**
@@ -44,7 +48,11 @@ void ActiveState::handleResolve(Incident *incident)
  */
 void ActiveState::handleCancel(Incident *incident)
 {
-    (void)incident;
+    if (incident != 0)
+    {
+        std::cout << "[State] Active -> Cancelled" << std::endl;
+        incident->setState(new CancelledState());
+    }
 }
 
 /**
