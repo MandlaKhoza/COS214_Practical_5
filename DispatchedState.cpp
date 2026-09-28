@@ -23,7 +23,11 @@ void DispatchedState::handleDispatch(Incident* incident)
  */
 void DispatchedState::handleContain(Incident* incident)
 {
-    (void)incident;
+    if (incident != 0)
+    {
+        std::cout << "[State] Dispatched -> Active" << std::endl;
+        incident->setState(new ActiveState());
+    }
 }
 
 /**
@@ -45,7 +49,11 @@ void DispatchedState::handleResolve(Incident* incident)
  */
 void DispatchedState::handleCancel(Incident* incident)
 {
-    (void)incident;
+    if (incident != 0)
+    {
+        std::cout << "[State] Dispatched -> Cancelled" << std::endl;
+        incident->setState(new CancelledState());
+    }
 }
 
 /**
