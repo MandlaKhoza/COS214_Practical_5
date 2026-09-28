@@ -12,7 +12,8 @@ void ReportedState::handleDispatch(Incident* incident)
 {
     if (incident != 0)
     {
-        // The actual state transition is handled by Incident.
+        std::cout << "[State] Reported -> Dispatched" << std::endl;
+        incident->setState(new DispatchedState());
     }
 }
 
@@ -49,7 +50,11 @@ void ReportedState::handleResolve(Incident* incident)
  */
 void ReportedState::handleCancel(Incident* incident)
 {
-    (void)incident;
+       if (incident != 0)
+    {
+        std::cout << "[State] Reported -> Cancelled" << std::endl;
+        incident->setState(new CancelledState());
+    }
 }
 
 /**
