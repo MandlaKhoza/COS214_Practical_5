@@ -49,7 +49,7 @@ void EmergencyResponseFacade::declareEmergency(
         return;
     }
 
-    coordinator->notify(unit, "EMERGENCY DECLARED: ");
+    coordinator->notify(unit, "emergencyDeclared");
 
     DispatchUnitCommand* dispatch = new DispatchUnitCommand(unit, incident);
 

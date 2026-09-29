@@ -1,0 +1,255 @@
+ameltonkhoza@MnadlaKhoza:~/COS214/COS214_Practical_5-main$ sudo docker compose up --build
+WARN[0000] Docker Compose is configured to build using Bake, but buildx isn't installed 
+[+] Building 189.8s (16/16) FINISHED                                                                                                                                                                 docker:default
+ => [campusguard internal] load build definition from Dockerfile                                                                                                                                               0.2s
+ => => transferring dockerfile: 541B                                                                                                                                                                           0.0s
+ => [campusguard internal] load metadata for docker.io/library/ubuntu:22.04                                                                                                                                    2.8s
+ => [campusguard internal] load .dockerignore                                                                                                                                                                  0.1s
+ => => transferring context: 384B                                                                                                                                                                              0.0s
+ => [campusguard internal] load build context                                                                                                                                                                  0.2s
+ => => transferring context: 77.42kB                                                                                                                                                                           0.0s
+ => [campusguard builder 1/7] FROM docker.io/library/ubuntu:22.04@sha256:b8b6ee6aa931ecd9d0d952abc34dc0e5f7c6a30c6bb71b079fe399fde0329c02                                                                     10.0s
+ => => resolve docker.io/library/ubuntu:22.04@sha256:b8b6ee6aa931ecd9d0d952abc34dc0e5f7c6a30c6bb71b079fe399fde0329c02                                                                                          0.1s
+ => => sha256:20c3783cc497b5b0df1fc5f92bd64c3d2fbb24057c88692c8fda205b6ea8a2f2 29.75MB / 29.75MB                                                                                                               8.4s
+ => => extracting sha256:20c3783cc497b5b0df1fc5f92bd64c3d2fbb24057c88692c8fda205b6ea8a2f2                                                                                                                      1.3s
+ => [campusguard stage-1 2/4] RUN apt-get update && apt-get install -y     gdb     valgrind     && rm -rf /var/lib/apt/lists/*                                                                               130.2s
+ => [campusguard builder 2/7] RUN apt-get update && apt-get install -y     g++     make     && rm -rf /var/lib/apt/lists/*                                                                                   157.0s
+ => [campusguard stage-1 3/4] WORKDIR /app                                                                                                                                                                     0.1s
+ => [campusguard builder 3/7] WORKDIR /build                                                                                                                                                                   0.1s 
+ => [campusguard builder 4/7] COPY Makefile ./                                                                                                                                                                 0.1s
+ => [campusguard builder 5/7] COPY *.cpp ./                                                                                                                                                                    0.1s
+ => [campusguard builder 6/7] COPY *.h ./                                                                                                                                                                      0.1s
+ => [campusguard builder 7/7] RUN make clean && make                                                                                                                                                           6.5s
+ => [campusguard stage-1 4/4] COPY --from=builder /build/campusguard /app/campusguard                                                                                                                          0.1s
+ => [campusguard] exporting to image                                                                                                                                                                          12.3s
+ => => exporting layers                                                                                                                                                                                        9.9s
+ => => exporting manifest sha256:058193793ba3fdbcc62b5ecf4e9e180a011602c7f92950207a8a218d132d907b                                                                                                              0.0s
+ => => exporting config sha256:51a9c83e6e7decb8bf21371e2a8f00e6d42091cf355f003f01e14ea38509c4cd                                                                                                                0.0s
+ => => exporting attestation manifest sha256:84b7551656caadebf386fd00d1dbb17e066d430843f5af5fa09de1f0ffbc3dfd                                                                                                  0.0s
+ => => exporting manifest list sha256:f2b15c79c42378395f72d225aac7d0384678bc40de9c6135e733477704410eef                                                                                                         0.0s
+ => => naming to docker.io/library/campusguard:latest                                                                                                                                                          0.0s
+ => => unpacking to docker.io/library/campusguard:latest                                                                                                                                                       2.2s
+ => [campusguard] resolving provenance for metadata file                                                                                                                                                       0.0s
+[+] Running 3/3
+ ✔ campusguard                              Built                                                                                                                                                              0.0s 
+ ✔ Network cos214_practical_5-main_default  Created                                                                                                                                                            0.0s 
+ ✔ Container campusguard                    Created                                                                                                                                                            0.4s 
+Attaching to campusguard
+campusguard  | CampusGuard: Emergency Response Coordination
+campusguard  | [Coordinator] Registered Campus Security as a response colleague.
+campusguard  | [Coordinator] Registered Medical Response as a response colleague.
+campusguard  | [Coordinator] Registered Facilities Crew as a response colleague.
+campusguard  | 
+campusguard  | 
+campusguard  | SCENARIO 1: Medical emergency during the COS 132 lecture (Department of Computer Science) 
+campusguard  | 
+campusguard  | 
+campusguard  | [Main] Incident INC-001 created. Status = Reported
+campusguard  | [Coordinator] Medical Response reported event: "emergencyDeclared"
+campusguard  | [Coordinator] Emergency declared by Medical Response. Notifying all colleagues.
+campusguard  | [Coordinator] Alerting Campus Security
+campusguard  | [Coordinator] Alerting Facilities Crew
+campusguard  | [MedicalTeam] Medical Response responding to the incident location.
+campusguard  | [Coordinator] Medical Response reported event: "dispatched"
+campusguard  | [Coordinator] Directing Facilities Crew to prepare the affected area.
+campusguard  | [FacilitiesTeam] Facilities Crew preparing the affected area (unlocking doors, clearing routes).
+campusguard  | [State] Reported -> Dispatched
+campusguard  | [Incident] INC-001 -> Dispatched
+campusguard  | [Incident] state event: "Dispatched" (facade will mediate on our behalf)
+campusguard  | [AccessControlAdapter] lockZone("CS-LEC-A") -> engageLockdown("CS-LEC-A")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code CS-LEC-A
+campusguard  | [AccessControlAdapter] lockZone("CS-CLAB") -> engageLockdown("CS-CLAB")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code CS-CLAB
+campusguard  | [AccessControlAdapter] lockZone("CS-SRV") -> engageLockdown("CS-SRV")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code CS-SRV
+campusguard  | [AlertService] SEND [HIGH] Emergency reported: Student collapsed during COS 132 lecture in Lecture Hall A
+campusguard  | [State] Dispatched -> Active
+campusguard  | [Incident] INC-001 -> Active
+campusguard  | [Incident] state event: "Active" (facade will mediate on our behalf)
+campusguard  | 
+campusguard  | [Main] After declareEmergency. Status = Active
+campusguard  | [State] Active -> Resolved
+campusguard  | [Incident] INC-001 -> Resolved
+campusguard  | [Incident] state event: "Resolved" (facade will mediate on our behalf)
+campusguard  | [Main] After resolveEmergency. Status = Resolved
+campusguard  | 
+campusguard  | [Main] Command history so far:
+campusguard  | Dispatch: Medical Response to incident: Student collapsed during COS 132 lecture in Lecture Hall A
+campusguard  | Department of Computer Science is Locked
+campusguard  | Alert: Emergency reported: Student collapsed during COS 132 lecture in Lecture Hall A | Priority: HIGH
+campusguard  | 
+campusguard  | 
+campusguard  | SCENARIO 2: Electricity outage at the Library
+campusguard  | 
+campusguard  | [Main Incident] Incident INC-002 created, Status = Reported
+campusguard  | [Coordinator] Facilities Crew reported event: "emergencyDeclared"
+campusguard  | [Coordinator] Emergency declared by Facilities Crew. Notifying all colleagues.
+campusguard  | [Coordinator] Alerting Campus Security
+campusguard  | [Coordinator] Alerting Medical Response
+campusguard  | [FacilitiesTeam] Facilities Crew preparing the affected area (unlocking doors, clearing routes).
+campusguard  | [State] Reported -> Dispatched
+campusguard  | [Incident] INC-002 -> Dispatched
+campusguard  | [Incident] state event: "Dispatched" (facade will mediate on our behalf)
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-RD") -> engageLockdown("LIB-UP-RD")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-RD
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-SIL") -> engageLockdown("LIB-UP-SIL")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-SIL
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-GRP") -> engageLockdown("LIB-UP-GRP")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-GRP
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-RD") -> engageLockdown("LIB-LO-RD")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-RD
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-CMN") -> engageLockdown("LIB-LO-CMN")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-CMN
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-CUB") -> engageLockdown("LIB-LO-CUB")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-CUB
+campusguard  | [AlertService] SEND [HIGH] Emergency reported: Electricity outage - Central Library must be evacuated
+campusguard  | [State] Dispatched -> Active
+campusguard  | [Incident] INC-002 -> Active
+campusguard  | [Incident] state event: "Active" (facade will mediate on our behalf)
+campusguard  | 
+campusguard  | [Main Incident] After declareEmergency. Status = Active
+campusguard  | [Main Incident] Library is now locked for evacuation.
+campusguard  | 
+campusguard  | [Main Incident] Power restored - resolving incident and unlocking the library.
+campusguard  | [State] Active -> Resolved
+campusguard  | [Incident] INC-002 -> Resolved
+campusguard  | [Incident] state event: "Resolved" (facade will mediate on our behalf)
+campusguard  | [AccessControlAdapter] unlockZone("LIB-UP-RD") -> releaseLockdown("LIB-UP-RD")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-UP-RD
+campusguard  | [AccessControlAdapter] unlockZone("LIB-UP-SIL") -> releaseLockdown("LIB-UP-SIL")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-UP-SIL
+campusguard  | [AccessControlAdapter] unlockZone("LIB-UP-GRP") -> releaseLockdown("LIB-UP-GRP")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-UP-GRP
+campusguard  | [AccessControlAdapter] unlockZone("LIB-LO-RD") -> releaseLockdown("LIB-LO-RD")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-LO-RD
+campusguard  | [AccessControlAdapter] unlockZone("LIB-LO-CMN") -> releaseLockdown("LIB-LO-CMN")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-LO-CMN
+campusguard  | [AccessControlAdapter] unlockZone("LIB-LO-CUB") -> releaseLockdown("LIB-LO-CUB")
+campusguard  | [LegacySystem] RELEASE_LOCKDOWN signal sent for zone code LIB-LO-CUB
+campusguard  | [Main Incident] After resolveEmergency and unlock. Status = Resolved
+campusguard  | 
+campusguard  | [Main Incident] Command history after power outage scenario:
+campusguard  | Dispatch: Medical Response to incident: Student collapsed during COS 132 lecture in Lecture Hall A
+campusguard  | Department of Computer Science is Locked
+campusguard  | Alert: Emergency reported: Student collapsed during COS 132 lecture in Lecture Hall A | Priority: HIGH
+campusguard  | Dispatch: Facilities Crew to incident: Electricity outage - Central Library must be evacuated
+campusguard  | Central Library is Unlocked
+campusguard  | Alert: Emergency reported: Electricity outage - Central Library must be evacuated | Priority: HIGH
+campusguard  | 
+campusguard  | 
+campusguard  | SCENARIO 3: Natural disaster - campus-wide lockdown
+campusguard  | 
+campusguard  | [Main Incident] Incident INC-003 created. Status = Reported
+campusguard  | [Coordinator] Campus Security reported event: "emergencyDeclared"
+campusguard  | [Coordinator] Emergency declared by Campus Security. Notifying all colleagues.
+campusguard  | [Coordinator] Alerting Medical Response
+campusguard  | [Coordinator] Alerting Facilities Crew
+campusguard  | [SecurityTeam] Campus Security mobilising to the incident location.
+campusguard  | [Coordinator] Campus Security reported event: "dispatched"
+campusguard  | [Coordinator] Directing Facilities Crew to prepare the affected area.
+campusguard  | [FacilitiesTeam] Facilities Crew preparing the affected area (unlocking doors, clearing routes).
+campusguard  | [State] Reported -> Dispatched
+campusguard  | [Incident] INC-003 -> Dispatched
+campusguard  | [Incident] state event: "Dispatched" (facade will mediate on our behalf)
+campusguard  | [AccessControlAdapter] lockZone("EBIT-HR") -> engageLockdown("EBIT-HR")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code EBIT-HR
+campusguard  | [AccessControlAdapter] lockZone("IS-LEC-B") -> engageLockdown("IS-LEC-B")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code IS-LEC-B
+campusguard  | [AccessControlAdapter] lockZone("IS-DATA") -> engageLockdown("IS-DATA")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code IS-DATA
+campusguard  | [AccessControlAdapter] lockZone("IS-MEDIA") -> engageLockdown("IS-MEDIA")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code IS-MEDIA
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-RD") -> engageLockdown("LIB-UP-RD")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-RD
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-SIL") -> engageLockdown("LIB-UP-SIL")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-SIL
+campusguard  | [AccessControlAdapter] lockZone("LIB-UP-GRP") -> engageLockdown("LIB-UP-GRP")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-UP-GRP
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-RD") -> engageLockdown("LIB-LO-RD")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-RD
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-CMN") -> engageLockdown("LIB-LO-CMN")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-CMN
+campusguard  | [AccessControlAdapter] lockZone("LIB-LO-CUB") -> engageLockdown("LIB-LO-CUB")
+campusguard  | [LegacySystem] ENGAGE_LOCKDOWN signal sent for zone code LIB-LO-CUB
+campusguard  | [AlertService] SEND [HIGH] Emergency reported: Tornado warning - full campus lockdown
+campusguard  | [State] Dispatched -> Active
+campusguard  | [Incident] INC-003 -> Active
+campusguard  | [Incident] state event: "Active" (facade will mediate on our behalf)
+campusguard  | 
+campusguard  | [Main Incident] Deploying Medical and Facilities as backup:
+campusguard  | [Coordinator] Medical Response reported event: "emergencyDeclared"
+campusguard  | [Coordinator] Emergency declared by Medical Response. Notifying all colleagues.
+campusguard  | [Coordinator] Alerting Campus Security
+campusguard  | [Coordinator] Alerting Facilities Crew
+campusguard  | [MedicalTeam] Medical Response responding to the incident location.
+campusguard  | [Coordinator] Medical Response reported event: "dispatched"
+campusguard  | [Coordinator] Directing Facilities Crew to prepare the affected area.
+campusguard  | [FacilitiesTeam] Facilities Crew preparing the affected area (unlocking doors, clearing routes).
+campusguard  | [AlertService] SEND [HIGH] Emergency reported: Tornado warning - full campus lockdown
+campusguard  | [Coordinator] Facilities Crew reported event: "emergencyDeclared"
+campusguard  | [Coordinator] Emergency declared by Facilities Crew. Notifying all colleagues.
+campusguard  | [Coordinator] Alerting Campus Security
+campusguard  | [Coordinator] Alerting Medical Response
+campusguard  | [FacilitiesTeam] Facilities Crew preparing the affected area (unlocking doors, clearing routes).
+campusguard  | [AlertService] SEND [HIGH] Emergency reported: Tornado warning - full campus lockdown
+campusguard  | 
+campusguard  | [Main Incident] After full deployment. Status = Active
+campusguard  | [State] Active -> Resolved
+campusguard  | [Incident] INC-003 -> Resolved
+campusguard  | [Incident] state event: "Resolved" (facade will mediate on our behalf)
+campusguard  | [Main Incident] After resolveEmergency. Status = Resolved
+campusguard  | 
+campusguard  | [Main Incident] Full command history:
+campusguard  | Dispatch: Medical Response to incident: Student collapsed during COS 132 lecture in Lecture Hall A
+campusguard  | Department of Computer Science is Locked
+campusguard  | Alert: Emergency reported: Student collapsed during COS 132 lecture in Lecture Hall A | Priority: HIGH
+campusguard  | Dispatch: Facilities Crew to incident: Electricity outage - Central Library must be evacuated
+campusguard  | Central Library is Locked
+campusguard  | Alert: Emergency reported: Electricity outage - Central Library must be evacuated | Priority: HIGH
+campusguard  | Dispatch: Campus Security to incident: Tornado warning - full campus lockdown
+campusguard  | University of Pretoria is Locked
+campusguard  | Alert: Emergency reported: Tornado warning - full campus lockdown | Priority: HIGH
+campusguard  | Dispatch: Medical Response to incident: Tornado warning - full campus lockdown
+campusguard  | University of Pretoria is Locked
+campusguard  | Alert: Emergency reported: Tornado warning - full campus lockdown | Priority: HIGH
+campusguard  | Dispatch: Facilities Crew to incident: Tornado warning - full campus lockdown
+campusguard  | University of Pretoria is Locked
+campusguard  | Alert: Emergency reported: Tornado warning - full campus lockdown | Priority: HIGH
+campusguard  | 
+campusguard  | 
+campusguard  | Cross-pattern checkpoints
+campusguard  | Composite : institution.isLocked()          = true
+campusguard  | Composite : ebitFaculty.isLocked()          = true
+campusguard  | Composite : facultyHROffice.isLocked()      = true
+campusguard  | Composite : compSciDept.isLocked()          = true
+campusguard  | Composite : csLectureHall.isLocked()        = true
+campusguard  | Composite : csComputerLab.isLocked()        = true
+campusguard  | Composite : csServerRoom.isLocked()         = true
+campusguard  | Composite : infoSciDept.isLocked()          = true
+campusguard  | Composite : isLectureHall.isLocked()        = true
+campusguard  | Composite : isDataLab.isLocked()            = true
+campusguard  | Composite : isMultimedia.isLocked()         = true
+campusguard  | Composite : library.isLocked()              = true
+campusguard  | Composite : upperFloorSection.isLocked()    = true
+campusguard  | Composite : lowerFloorSection.isLocked()    = true
+campusguard  | Composite : upperReadingZone.isLocked()     = true
+campusguard  | Composite : upperSilentStudyZone.isLocked() = true
+campusguard  | Composite : upperGroupStudyZone.isLocked()  = true
+campusguard  | Composite : lowerReadingZone.isLocked()     = true
+campusguard  | Composite : commonStudyArea.isLocked()      = true
+campusguard  | Composite : cubicles.isLocked()             = true
+campusguard  | Shutdown complete
+campusguard exited with code 0
+ameltonkhoza@MnadlaKhoza:~/COS214/COS214_Practical_5-main$ 
+
+
+
+//run insyructions  
+# Start Docker daemon
+sudo service docker start
+
+# Go to the project directory
+cd ~/COS214/COS214_Practical_5-main
+
+#build and run program
+sudo docker compose up --build
