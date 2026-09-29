@@ -1,0 +1,41 @@
+Breakpoint 1 at 0xa61b: file ResponseCoordinator.cpp, line 83.
+Starting program: /home/ameltonkhoza/COS214/COS214_Practical_5-main/campusguard 
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, ResponseCoordinator::notify (this=0x7fffffffd120, sender=0x7fffffffd1b0, event="emergencyDeclared") at ResponseCoordinator.cpp:83
+83	{
+$1 = "emergencyDeclared"
+$2 = (ResponseComponent *) 0x7fffffffd1b0
+84	    if (sender == nullptr && event != "emergencyCancelled") {
+90	              << " reported event: \"" << event << "\"" << std::endl;
+89	    std::cout << "[Coordinator] " << sender->getName()
+90	              << " reported event: \"" << event << "\"" << std::endl;
+89	    std::cout << "[Coordinator] " << sender->getName()
+97	    if (event == "dispatched") {
+122	    else if (event == "standDown") {
+140	    else if (event == "emergencyDeclared") { //we no longer pass this section
+142	                  << sender->getName() << ". Notifying all colleagues."
+143	                  << std::endl;
+142	                  << sender->getName() << ". Notifying all colleagues."
+144	        for (ResponseComponent* c : components) {
+145	            if (c != sender) {
+Continuing.
+
+Breakpoint 1, ResponseCoordinator::notify (this=0x7fffffffd120, sender=0x7fffffffd1b0, event="dispatched") at ResponseCoordinator.cpp:83
+83	{
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 101443] will be killed.
+
+Quit anyway? (y or n) y
+ameltonkhoza@MnadlaKhoza:~/COS214/COS214_Practical_5-main$ ^C
+ameltonkhoza@MnadlaKhoza:~/COS214/COS214_Practical_5-main$ 
+
+//now scenaion 1 has access to the emergencey decalred if statement.

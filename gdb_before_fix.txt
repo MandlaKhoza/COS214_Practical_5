@@ -1,0 +1,35 @@
+Breakpoint 1 at 0xa61b: file ResponseCoordinator.cpp, line 83.
+Starting program: /home/ameltonkhoza/COS214/COS214_Practical_5-main/campusguard 
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, ResponseCoordinator::notify (this=0x7fffffffd120, sender=0x7fffffffd1b0, event="EMERGENCY DECLARED: ") at ResponseCoordinator.cpp:83
+83	{
+$1 = "EMERGENCY DECLARED: " //emergency declared different from teh required function
+$2 = (ResponseComponent *) 0x7fffffffd1b0
+84	    if (sender == nullptr) {
+91	              << " reported event: \"" << event << "\"" << std::endl;
+90	    std::cout << "[Coordinator] " << sender->getName()
+91	              << " reported event: \"" << event << "\"" << std::endl;
+90	    std::cout << "[Coordinator] " << sender->getName()
+98	    if (event == "dispatched") {
+123	    else if (event == "standDown") {
+141	    else if (event == "emergencyDeclared") {
+152	    else if (event == "emergencyCancelled") {
+163	                  << event << "\"." << std::endl;
+165	}
+EmergencyResponseFacade::declareEmergency (this=0x7fffffffd100, incident=0x7fffffffd8b0, area=0x7fffffffd250, unit=0x7fffffffd1b0) at EmergencyResponseFacade.cpp:54
+54	    DispatchUnitCommand* dispatch = new DispatchUnitCommand(unit, incident);
+
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 97029] will be killed.
+
+Quit anyway? (y or n) y
+//This is before fixing teh main to make sure that we accomodate teh correct event.
